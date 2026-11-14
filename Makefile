@@ -46,6 +46,9 @@ test-e2e: setup
 	cd web && npx playwright install chromium
 	cd web && npx playwright test
 
+screenshot: setup
+	cd web && SCREENSHOT=1 npx playwright test -g "completes a shift"
+
 lint: setup
 	cd api && $(abspath $(PYBIN))/ruff check . && $(abspath $(PYBIN))/ruff format --check .
 	cd web && npx tsc --noEmit
@@ -57,4 +60,4 @@ types: setup
 prove: setup
 	./scripts/prove-case.sh $(CASE)
 
-.PHONY: help setup dev test test-api test-web contract test-e2e lint types prove
+.PHONY: screenshot help setup dev test test-api test-web contract test-e2e lint types prove

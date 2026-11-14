@@ -20,8 +20,10 @@ test("manager signs in, completes a shift, and the change survives a reload", as
   await page.reload();
   await expect(page.locator("li.shift", { hasText: "Lunch service, grill" }).getByText("Done")).toBeVisible();
 
-  mkdirSync("../docs", { recursive: true });
-  await page.screenshot({ path: "../docs/screenshot.png" });
+  if (process.env.SCREENSHOT) {
+    mkdirSync("../docs", { recursive: true });
+    await page.screenshot({ path: "../docs/screenshot.png" });
+  }
 });
 
 test("a member cannot see another team and can sign out", async ({ page }) => {
