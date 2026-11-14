@@ -35,7 +35,7 @@ def create_app(settings: Settings | None = None, payroll: PayrollClient | None =
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=list(settings.cors_origins),
+        allow_origins=["*"],
         allow_credentials=True,
         allow_methods=["GET", "POST", "PATCH", "DELETE"],
         allow_headers=["content-type", "x-requested-with"],

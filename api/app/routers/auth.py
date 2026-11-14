@@ -30,8 +30,8 @@ def _set_cookie(
         value,
         max_age=max_age,
         httponly=True,
-        secure=settings.cookie_secure,
-        samesite=settings.cookie_samesite,  # type: ignore[arg-type]
+        secure=False,
+        samesite="lax",
         path="/",
     )
 
