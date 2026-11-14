@@ -24,6 +24,7 @@ def list_shifts(db: Session, team_id: int, status: str | None = None) -> list[Sh
     stmt = (
         select(Shift)
         .where(Shift.team_id == team_id)
+        .options(joinedload(Shift.assignee))
         .order_by(Shift.starts_at, Shift.id)
     )
     if status:
