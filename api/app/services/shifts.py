@@ -33,8 +33,13 @@ def list_shifts(db: Session, team_id: int, status: str | None = None) -> list[Sh
 
 
 def get_shift_for_user(db: Session, user: User, shift_id: int) -> Shift:
-    """Load a shift by id."""
-    shift = db.scalar(select(Shift).where(Shift.id == shift_id).options(joinedload(Shift.assignee)))
+    """Load a shift only if the user belongs to its team. Missing and forbidden look the same."""
+    shift = db.scalar(
+        select(Shift)
+        .join(Membership, Membership.team_id == Shift.team_id)
+        .where(Shift.id == shift_id, Membership.user_id == user.id)
+        .options(joinedload(Shift.assignee))
+    )
     if shift is None:
         raise NotFound
     return shift
