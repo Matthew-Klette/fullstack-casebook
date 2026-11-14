@@ -1,1 +1,2 @@
 case	runner	selector
+1	web	src/shiftCache.test.tsx -t "shows the new status without a reload"
