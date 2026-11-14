@@ -1,2 +1,3 @@
 case	runner	selector
 1	web	src/shiftCache.test.tsx -t "shows the new status without a reload"
+2	api	tests/test_contract.py::test_committed_openapi_matches_the_running_app

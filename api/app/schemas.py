@@ -39,7 +39,7 @@ class ShiftOut(BaseModel):
     team_id: int
     title: str
     notes: str
-    start_at: datetime = Field(validation_alias="starts_at")
+    starts_at: datetime
     status: ShiftStatus
     assignee_id: int | None
     assignee_name: str | None
