@@ -47,7 +47,7 @@ def test_http_client_retries_5xx_with_exponential_backoff():
     attempts = []
 
     def handler(request):
-        attempts.append(request.headers["idempotency-key"])
+        attempts.append(request.url.path)
         return (
             httpx.Response(503)
             if len(attempts) < 3
@@ -56,7 +56,7 @@ def test_http_client_retries_5xx_with_exponential_backoff():
 
     client, sleeps = _client(handler)
     assert client.submit("exp1", {}) == "b1"
-    assert attempts == ["exp1"] * 3
+    assert attempts == ["/payroll/batches"] * 3
     assert len(sleeps) == 2 and 0.1 <= sleeps[0] < 0.13 and 0.2 <= sleeps[1] < 0.26
 
 

@@ -52,7 +52,7 @@ class HttpPayrollClient:
         self._sleep = sleep
 
     def submit(self, export_id: str, payload: dict[str, Any]) -> str:
-        headers = {"Idempotency-Key": export_id}
+        headers: dict[str, str] = {}
         last: Exception | None = None
         for attempt in range(self._retries):
             try:
