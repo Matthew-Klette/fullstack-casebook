@@ -16,9 +16,9 @@ selector="$(echo "$row" | cut -f3)"
 
 run() {  # run <dir>
   if [ "$runner" = api ]; then
-    (cd "$1/api" && "$root/api/.venv/bin/python" -m pytest -q -p no:cacheprovider $selector 2>&1)
+    (cd "$1/api" && eval "\"$root/api/.venv/bin/python\" -m pytest -q -p no:cacheprovider $selector" 2>&1)
   else
-    (cd "$1/web" && npx vitest run $selector 2>&1)
+    (cd "$1/web" && eval "npx vitest run $selector" 2>&1)
   fi
 }
 
