@@ -2,3 +2,4 @@ case	runner	selector
 1	web	src/shiftCache.test.tsx -t "shows the new status without a reload"
 2	api	tests/test_contract.py::test_committed_openapi_matches_the_running_app
 3	api	tests/test_authorization.py::test_non_member_cannot_read_a_shift_by_id "tests/test_authorization.py::test_non_member_is_rejected_on_every_shift_route"
+4	api	tests/test_concurrency.py::test_stale_version_is_rejected_and_nothing_is_overwritten

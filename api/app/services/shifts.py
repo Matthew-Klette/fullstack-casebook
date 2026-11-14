@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session, joinedload
 
 from app.models import Membership, Shift, User
@@ -79,12 +79,20 @@ def update_shift(db: Session, shift: Shift, data: ShiftUpdate) -> Shift:
     elif data.assignee_id is not None:
         _check_assignee(db, shift.team_id, data.assignee_id)
         fields["assignee_id"] = data.assignee_id
-    for name, value in fields.items():
-        setattr(shift, name, value)
-    shift.version += 1
+    # Compare-and-swap: the write only lands if nobody bumped the version since the client read.
+    # Doing the comparison inside the UPDATE keeps it atomic; a read-then-check would race.
+    result = db.execute(
+        update(Shift)
+        .where(Shift.id == shift.id, Shift.version == data.version)
+        .values(**fields, version=Shift.version + 1)
+    )
+    if result.rowcount == 0:
+        db.rollback()
+        current = db.scalar(select(Shift.version).where(Shift.id == shift.id))
+        raise VersionConflict(current if current is not None else data.version)
     db.commit()
-    db.refresh(shift)
-    return shift
+    db.expire(shift)
+    return db.scalar(select(Shift).where(Shift.id == shift.id).options(joinedload(Shift.assignee)))
 
 
 def delete_shift(db: Session, shift: Shift) -> None:
