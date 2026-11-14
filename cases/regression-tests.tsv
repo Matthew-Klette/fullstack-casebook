@@ -4,3 +4,4 @@ case	runner	selector
 3	api	tests/test_authorization.py::test_non_member_cannot_read_a_shift_by_id "tests/test_authorization.py::test_non_member_is_rejected_on_every_shift_route"
 4	api	tests/test_concurrency.py::test_stale_version_is_rejected_and_nothing_is_overwritten
 5	api	tests/test_query_count.py::test_listing_shifts_costs_the_same_number_of_queries_for_1_or_25_assignees
+6	api	tests/test_payroll_integration.py::test_lost_acknowledgement_does_not_create_a_second_payroll_batch

@@ -52,7 +52,9 @@ class HttpPayrollClient:
         self._sleep = sleep
 
     def submit(self, export_id: str, payload: dict[str, Any]) -> str:
-        headers: dict[str, str] = {}
+        # Same key on every attempt: if an earlier attempt was processed but its answer was lost,
+        # the service returns the original result instead of creating a second batch.
+        headers = {"Idempotency-Key": export_id}
         last: Exception | None = None
         for attempt in range(self._retries):
             try:
