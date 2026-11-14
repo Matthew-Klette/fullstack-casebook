@@ -63,7 +63,7 @@ export function useUpdateShift(teamId: number) {
     // A 409 means someone else saved first. Refetch so the user edits the current version.
     onSettled: (_data, error) => {
       if (!error || (error instanceof ApiError && error.isConflict)) {
-        return qc.invalidateQueries({ queryKey: keys.shifts(teamId) });
+        return qc.invalidateQueries({ queryKey: ["shift", teamId] });
       }
     },
   });
